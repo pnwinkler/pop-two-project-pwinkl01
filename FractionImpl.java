@@ -1,4 +1,5 @@
 // todo: all methods should have comments. Follow the instructions at the bottom of the instructions page
+package fraction;
 
 public class FractionImpl implements Fraction {
     private int numerator;

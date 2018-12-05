@@ -1,3 +1,4 @@
+package fraction;
 /**
  * Representing fractions of the form numerator and denominator
  * The object should be immutable.

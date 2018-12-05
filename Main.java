@@ -1,4 +1,4 @@
-// to test the files being modified
+package fraction;// to test the files being modified
 
 public class Main {
     public static void main(String[] args) {
