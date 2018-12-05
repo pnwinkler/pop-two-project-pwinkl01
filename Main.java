@@ -1,7 +1,5 @@
 // to test the files being modified
 
-package fraction;
-
 public class Main {
     public static void main(String[] args) {
 //        Fraction f = new FractionImpl(8,-12);
@@ -17,5 +15,7 @@ public class Main {
         Fraction f9 = new FractionImpl("8/-1 ");
         System.out.println(f9);
         Fraction f10 = new FractionImpl("-5 /6 ");
+        Fraction f11 = new FractionImpl("-6");
+        Fraction f12 = new FractionImpl("6");
     }
 }
