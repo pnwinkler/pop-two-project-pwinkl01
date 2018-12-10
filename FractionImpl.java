@@ -6,7 +6,9 @@ public class FractionImpl implements Fraction {
     private int denominator; // may not be zero. May be represented only internally as negative
 
     public FractionImpl(int numerator, int denominator) {
-        simplify_fraction(numerator, denominator);
+        int[] result = simplify_fraction(numerator, denominator);
+        this.numerator = result[0];
+        this.denominator = result[1];
     }
 
     public FractionImpl(int wholeNumber) {
@@ -18,7 +20,9 @@ public class FractionImpl implements Fraction {
         if (!fraction.contains("/")) {
             // it's a whole number
             int numr2 = Integer.parseInt(fraction);
-            simplify_fraction(numr2, 1);
+//            simplify_fraction(numr2, 1);
+            this.numerator = numr2;
+            this.denominator = 1;
         } else {
             // it's already a fraction. Just simplify
             int[] numer_denom = fraction_string_to_ints(fraction);
@@ -31,7 +35,7 @@ public class FractionImpl implements Fraction {
     private int[] fraction_string_to_ints(String str_fraction) {
         // take a string fraction then return its nom and denom
         // does not simplify
-        // does not test if it is actually receiving a fraction
+        // assumes it is receiving a fraction
         int slash_index = str_fraction.indexOf("/");
         String s_numr = str_fraction.substring(0, slash_index);
         String s_denom = str_fraction.substring(slash_index + 1, str_fraction.length());
@@ -68,7 +72,7 @@ public class FractionImpl implements Fraction {
         } else if (local_numer < 0 ^ local_denom < 0) {
             // set num to negative. If denom was the negative, then positive it
             if (local_numer > 0) local_numer *= -1;
-            if (local_denom > 0) local_denom *= -1;
+            if (local_denom < 0) local_denom *= -1;
         }
         int[] numer_denom3 = new int[2];
         numer_denom3[0] = local_numer;
