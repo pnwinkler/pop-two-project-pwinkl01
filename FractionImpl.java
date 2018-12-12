@@ -12,7 +12,8 @@ public class FractionImpl implements Fraction {
     }
 
     public FractionImpl(int wholeNumber) {
-        simplify_fraction(wholeNumber, 1);
+        this.numerator = wholeNumber;
+        this.denominator = 1;
     }
 
     public FractionImpl(String fraction) {
@@ -157,20 +158,30 @@ public class FractionImpl implements Fraction {
 
     @Override
     public boolean equals(Object o) {
-        // assumed that if "o" arrives here, it's not a Fraction
-        return false;
-//        return super.equals(obj);
-    }
-    public boolean equals(Fraction o){
-        // do the comparison
-        int f_numr = get_f_values(o)[0];
-        int f_denom = get_f_values(o)[1];
-        f_numr = simplify_fraction(f_numr, f_denom)[0];
-        f_denom = simplify_fraction(f_numr, f_denom)[1];
+        if (o instanceof Fraction) {
+            String o_str = o.toString();
 
-        return (Integer.compare(this.numerator, f_numr) == 0 &&
-                Integer.compare(this.denominator, f_denom) == 0);
+            if(o_str.contains("/")){
+                int slash_index = o_str.indexOf("/");
+                String s_numr = o_str.substring(0, slash_index);
+                String s_denom = o_str.substring(slash_index + 1, o_str.length());
+                int f_numr = Integer.parseInt(s_numr.replace(" ", ""));
+                int f_denom = Integer.parseInt(s_denom.replace(" ", ""));
+            }
+
+            else{
+                int f_numr = Integer.parseInt(o_str);
+                int f_denom = 1;
+            }
+
+            return (Integer.compare(this.numerator, f_numr) == 0 &&
+                    Integer.compare(this.denominator, f_denom) == 0);
+        }
+        else{
+            return false;
+        }
     }
+
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
