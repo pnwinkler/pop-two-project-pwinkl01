@@ -160,18 +160,19 @@ public class FractionImpl implements Fraction {
     public boolean equals(Object o) {
         if (o instanceof Fraction) {
             String o_str = o.toString();
+            int f_numr, f_denom;
 
             if(o_str.contains("/")){
                 int slash_index = o_str.indexOf("/");
                 String s_numr = o_str.substring(0, slash_index);
                 String s_denom = o_str.substring(slash_index + 1, o_str.length());
-                int f_numr = Integer.parseInt(s_numr.replace(" ", ""));
-                int f_denom = Integer.parseInt(s_denom.replace(" ", ""));
+                f_numr = Integer.parseInt(s_numr.replace(" ", ""));
+                f_denom = Integer.parseInt(s_denom.replace(" ", ""));
             }
 
             else{
-                int f_numr = Integer.parseInt(o_str);
-                int f_denom = 1;
+                f_numr = Integer.parseInt(o_str);
+                f_denom = 1;
             }
 
             return (Integer.compare(this.numerator, f_numr) == 0 &&
@@ -191,36 +192,43 @@ public class FractionImpl implements Fraction {
     @Override
     public Fraction inverse() {
         // a/b --> b/a
-        int orignumerator = this.numerator;
-        this.numerator = this.denominator;
-        this.denominator = orignumerator;
-        return null;
+        if (this.numerator == 0 || this.denominator == 0) return new FractionImpl(0); // prevents Arithmetic Exceptions
+        else{
+            int orignumerator = this.numerator;
+            this.numerator = this.denominator;
+            this.denominator = orignumerator;
+            return new FractionImpl(this.numerator, this.denominator);
+        }
     }
 
     @Override
-    public int compareTo(Fraction o) {
-        double this_value = this.numerator / this.denominator;
+    public int compareTo(Object o) {
+        if (o instanceof Fraction || o instanceof Integer){
+            double this_value = (double) this.numerator / (double) this.denominator;
+            String o_str = o.toString();
+            int[] o_vals = new int[2];
 
-        int[] o_vals = get_f_values(o);
-        double o_value = (double) o_vals[0] / (double) o_vals[1];
-//        if ((Math.abs(this_value - o_value) <= 0.000001)) return 0;
-//        else if (this_value > o_value) return 1;
-//        else return -1;
-        return Double.compare(this_value, o_value);
+            // todo: figure out what to do here / what this is doing
+            // and make a function to get nomr, denomr from any String or Fraction
+            // note: since I changed from Fraction f to Object o as param, I get this clashes yet neither overrides error
+            if(o_str.contains("/")){
+                int slash_index = o_str.indexOf("/");
+                String s_numr = o_str.substring(0, slash_index);
+                String s_denom = o_str.substring(slash_index + 1, o_str.length());
+                o_vals[0] = Integer.parseInt(s_numr.replace(" ", ""));
+                o_vals[1] = Integer.parseInt(s_denom.replace(" ", ""));
+            }
+            else{
+                o_vals[0] = Integer.parseInt(o_str);
+                o_vals[0] = 1;
+            }
+
+            double o_value = (double) o_vals[0] / (double) o_vals[1];
+            return Double.compare(this_value, o_value);
+        }
+        else throw new ClassCastException("compareTo function received neither Fraction nor int");
     }
 
-    public int compareTo(int o) {
-        double this_value = this.numerator / this.denominator;
-//        if (this_value < o) return -1;
-//        else if (this_value > o) return 1;
-//        else return 0;
-        return Double.compare(this_value, (double) o);
-    }
-
-    public int compareTo() {
-        // neither Fraction nor int. Throw ClassCastException
-        throw new ClassCastException("compareTo function given neither int nor Fraction object");
-    }
 
     @Override
     public String toString() {

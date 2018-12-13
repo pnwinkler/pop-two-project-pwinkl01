@@ -84,7 +84,8 @@ public interface Fraction extends Comparable<Fraction> {
      * @return the result of the comparison
      */
     @Override
-    public int compareTo(Fraction f);
+    public int compareTo(Object o);
+//    public int compareTo(Fraction f);
 
     /**
      * Returns a <pre>String</pre> of the form <pre>n/d</pre>, where <pre>n</pre> is the

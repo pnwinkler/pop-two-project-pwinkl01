@@ -13,6 +13,7 @@ public class FractionImplTest {
     private String compareto = "compareto";
     private String inverse = "inverse";
     private String negate = "negate";
+    private String equals = "equals";
 
     private String create_two_fractions_return_operation(String f1s, String f2s, String operation){
         Fraction f1 = new FractionImpl(f1s);
@@ -178,47 +179,66 @@ public class FractionImplTest {
         assertEquals(create_fraction_test_operation("-52", negate), "52");
         assertEquals(create_fraction_test_operation("1/6", negate), "-1/6");
         assertEquals(create_fraction_test_operation("-6/2", negate), "3");
-//        assertEquals(create_fraction_test_operation("0", negate), "-0"); // inconsequential
     }
 
     @org.junit.Test
     public void equals() throws Exception {
+        assertEquals(create_two_fractions_return_operation("3","9/3", equals), "true");
+        assertEquals(create_two_fractions_return_operation("9","9", equals), "true");
+        assertEquals(create_two_fractions_return_operation("12/60","1/5", equals), "true");
+        assertEquals(create_two_fractions_return_operation("1/9","1/9", equals), "true");
+        assertEquals(create_two_fractions_return_operation("6/4","3/2", equals), "true");
+        assertEquals(create_two_fractions_return_operation("0/5","0/7", equals), "true");
 
+        // todo: test negatives too
+        assertEquals(create_two_fractions_return_operation("3","1", equals), "false");
+        assertEquals(create_two_fractions_return_operation("1/7","1/8", equals), "false");
+        assertEquals(create_two_fractions_return_operation("14","0", equals), "false");
+        assertEquals(create_two_fractions_return_operation("1","0", equals), "false");
     }
-
-    @org.junit.Test
-    public void equals1() throws Exception {
-
+    @Test(expected =  ArithmeticException.class)
+    public void testAbsArithmeticExceptionThrown(){
+        assertEquals(create_two_fractions_return_operation("1/0","1/0", equals), "false");
     }
-
-//    @org.junit.Test
-//    public void clone() throws Exception {
-//
-//    }
 
     @org.junit.Test
     public void inverse() throws Exception {
-
+        // note that X/0 is an invalid fraction, so I don't test it here
+        assertEquals(create_fraction_test_operation("0/9", inverse), "0");
+        assertEquals(create_fraction_test_operation("0", inverse), "0");
+        assertEquals(create_fraction_test_operation("0/-640", inverse), "0");
+        assertEquals(create_fraction_test_operation("1/9", inverse), "9");
+        assertEquals(create_fraction_test_operation("12/2", inverse), "1/6");
+        assertEquals(create_fraction_test_operation("128/2", inverse), "1/64");
+        assertEquals(create_fraction_test_operation("-1/9", inverse), "-9");
+        assertEquals(create_fraction_test_operation("1/-9", inverse), "-9");
+//        assertEquals(create_fraction_test_operation("0/0", inverse), "0");
+//        assertEquals(create_fraction_test_operation("-64/0", inverse), "0");
     }
 
     @org.junit.Test
     public void compareTo() throws Exception {
+        // deals with all compareTo functions
+        assertEquals(create_two_fractions_return_operation("1", "1", compareto), "0");
+        assertEquals(create_two_fractions_return_operation("0", "0", compareto), "0");
+        assertEquals(create_two_fractions_return_operation("-12", "-12", compareto), "0");
+        assertEquals(create_two_fractions_return_operation("3/1", "3", compareto), "0");
+        assertEquals(create_two_fractions_return_operation("1/12", "1/12", compareto), "0");
 
+        assertEquals(create_two_fractions_return_operation("12", "11", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("12", "1", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("5", "-99999", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("0", "-1/999", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("1/12", "1/13", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("6/12", "1/3", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("-3/9", "-5/9", compareto), "1");
+        assertEquals(create_two_fractions_return_operation("-5", "-9", compareto), "1");
+
+        assertEquals(create_two_fractions_return_operation("-4/9", "-3/9", compareto), "-1");
+        assertEquals(create_two_fractions_return_operation("1/12", "12/1", compareto), "-1");
+        assertEquals(create_two_fractions_return_operation("-1", "-11/12", compareto), "-1");
+        assertEquals(create_two_fractions_return_operation("-1/12", "1/12", compareto), "-1");
+        assertEquals(create_two_fractions_return_operation("0", "1/12", compareto), "-1");
     }
-
-    @org.junit.Test
-    public void compareTo1() throws Exception {
-
-    }
-
-    @org.junit.Test
-    public void compareTo2() throws Exception {
-
-    }
-
-//    @org.junit.Test
-//    public void toString() throws Exception {
-//
-//    }
-
+    // todo: add tests for ClassCastException when fed invalid input
 }
