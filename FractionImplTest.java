@@ -212,8 +212,6 @@ public class FractionImplTest {
         assertEquals(create_fraction_test_operation("128/2", inverse), "1/64");
         assertEquals(create_fraction_test_operation("-1/9", inverse), "-9");
         assertEquals(create_fraction_test_operation("1/-9", inverse), "-9");
-//        assertEquals(create_fraction_test_operation("0/0", inverse), "0");
-//        assertEquals(create_fraction_test_operation("-64/0", inverse), "0");
     }
 
     @org.junit.Test
